@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import { useWindowSize } from '../../hooks';
 import { Container } from './styled';
 import { useKeyWithChildren, generateLayouts } from './helpers';
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -22,6 +23,10 @@ export default function Workspace({
   layoutHeights,
   minW,
   minH,
+  autoResize,
+  rows,
+  correctHeight,
+  onBreakpointChange,
 }) {
   let layouts;
 
@@ -50,6 +55,15 @@ export default function Workspace({
     layouts = generateLayouts(layoutWidths, layoutHeights, totalGridUnits, minW, minH);
   }
 
+  const [, height] = useWindowSize();
+  const [_rowHeight, setRowHeight] = useState(rowHeight);
+
+  useEffect(() => {
+    if (autoResize) {
+      setRowHeight((height - correctHeight) / rows - gridMargin[1] - 2);
+    }
+  }, [autoResize, height, rows, correctHeight, gridMargin]);
+
   const children = useKeyWithChildren(_children);
   const columns = _columns || {
     lg: totalGridUnits,
@@ -68,13 +82,14 @@ export default function Workspace({
     >
       <ResponsiveGridLayout
         resizeHandle={resizeHandle || ''}
-        rowHeight={rowHeight}
+        rowHeight={_rowHeight}
         draggableHandle={`.${dragHandleClass}` || ''}
         margin={gridMargin}
         layouts={layouts}
         breakpoints={breakpoints}
         cols={columns}
         onLayoutChange={onLayoutChange}
+        onBreakpointChange={onBreakpointChange}
       >
         {children}
       </ResponsiveGridLayout>
@@ -92,7 +107,10 @@ Workspace.defaultProps = {
     xs: 480,
     xxs: 0,
   },
+  autoResize: false,
   rowHeight: 100,
+  rows: 12,
+  correctHeight: 0,
   children: [],
   layoutWidths: [[1]],
   layoutHeights: [[1]],
@@ -130,6 +148,8 @@ Workspace.propTypes = {
   classes: PropTypes.object,
   resizeHandle: PropTypes.instanceOf(React.Component),
   onLayoutChange: PropTypes.func,
+  /** Method of the ResponsiveGridLayout component. */
+  onBreakpointChange: PropTypes.func,
   layout: PropTypes.array,
   layoutWidths: PropTypes.array,
   layoutHeights: PropTypes.oneOfType([
@@ -139,4 +159,10 @@ Workspace.propTypes = {
   ]),
   minW: PropTypes.number,
   minH: PropTypes.number,
+  /** Whether it is necessary to automatically recalculate the rowHeight of the cards when the screen is resized so that the cards maintain their proportions relative to the screen. */
+  autoResize: PropTypes.bool,
+  /** If there is an appbar or footer, then you can specify how much to reduce the screen size. */
+  correctHeight: PropTypes.number,
+  /** The number of lines in the grid that fit on 1 screen. */
+  rows: PropTypes.number,
 };
