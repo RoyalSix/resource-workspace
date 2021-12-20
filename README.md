@@ -1,8 +1,12 @@
 # Resource Workspace RCL
 
+The resource workspace RCL is an adaptation or simplification of [react-grid-layout](https://github.com/react-grid-layout/react-grid-layout) which is a draggable and resizable grid layout with responsive breakpoints, for React.
+
+## API
+
 The API documentation of the Workspace React component. Learn more about the props and the CSS customization.
 
-# Understanding React-Grid-Layout
+## Understanding React-Grid-Layout
 
 Note that this react component is explored largely via its use in the unfoldingWord RCL `resource-workspace-rcl`.
 
