@@ -44,7 +44,7 @@ export default function Workspace({
         layout = newCurrentLayout;
       }
 
-      layouts = generateLayouts(layoutWidths, layoutHeights, totalGridUnits, minW, minH);
+      layouts = generateLayouts(layoutWidths, layoutHeights, totalGridUnits, minW, minH, _children);
       layouts = {
         ...layouts, lg: layout, md: layout,
       };
@@ -52,7 +52,7 @@ export default function Workspace({
       layouts = { ...layout };
     }
   } else {
-    layouts = generateLayouts(layoutWidths, layoutHeights, totalGridUnits, minW, minH);
+    layouts = generateLayouts(layoutWidths, layoutHeights, totalGridUnits, minW, minH, _children);
   }
 
   const [, height] = useWindowSize();
