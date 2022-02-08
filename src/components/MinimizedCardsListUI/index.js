@@ -61,7 +61,7 @@ export default function MinimizedCardsListUI({ minimizedCards = [], maximizeCard
     maximizeCard(id);
   };
 
-  if (badgeContent && badgeContent > 0) {
+  if (minimizedCards.length > 0 && badgeContent && badgeContent > 0) {
     return (
       <div>
         {showFabList &&
@@ -113,7 +113,7 @@ export default function MinimizedCardsListUI({ minimizedCards = [], maximizeCard
   }
 }
 
-MinimizedCardsUI.propTypes = {
+MinimizedCardsListUI.propTypes = {
   minimizedCards: PropTypes.array,
   maximizeCard: PropTypes.func,
 };
