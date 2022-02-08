@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import Badge from '@material-ui/core/Badge'
-import CloseIcon from '@material-ui/icons/Close'
-import { makeStyles } from '@material-ui/core/styles'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
-import AnnouncementIcon from '@material-ui/icons/Announcement'
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import Paper from './Paper'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Badge from '@material-ui/core/Badge';
+import CloseIcon from '@material-ui/icons/Close';
+import { makeStyles } from '@material-ui/core/styles';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Paper from './Paper';
 
 
 const useStyles = makeStyles(() => ({
@@ -27,37 +27,35 @@ const useStyles = makeStyles(() => ({
     margin: '0px 12px',
     cursor: 'pointer',
   },
-  pointerIcon: {
-    cursor: 'pointer',
-  },
+  pointerIcon: { cursor: 'pointer' },
   children: {
     height: '100%',
     overflow: 'auto',
     textAlign: 'start',
     padding: '4px 0px 0px 4px',
   },
-  paddingRight: {
-    padding: '0px 15px 0px 0px',
-  },
-}))
+  paddingRight: { padding: '0px 15px 0px 0px' },
+}));
 
 const FlexDiv = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const FlexSpacedDiv = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
-const Navigation = ({ items, classes, itemIndex, onPrevItem, onNextItem }) => (
+const Navigation = ({
+  items, classes, itemIndex, onPrevItem, onNextItem,
+}) => (
   <FlexSpacedDiv>
     <ChevronLeftIcon className={classes.chevronIcon} onClick={onPrevItem} />
     <FlexDiv>{`${itemIndex + 1} of ${items.length}`}</FlexDiv>
     <ChevronRightIcon className={classes.chevronIcon} onClick={onNextItem} />
   </FlexSpacedDiv>
-)
+);
 
 const Card = ({
   alert,
@@ -84,45 +82,50 @@ const Card = ({
   hideMarkdownToggle,
   getCustomComponent,
   settingsTitle: settingsTitle_,
-  classes: { root, dragIndicator, header, children: childrenClassName },
+  classes: {
+    root, dragIndicator, header, children: childrenClassName,
+  },
 }) => {
-  const [showMenu, setShowMenu] = useState(false)
-  const classes = useStyles({ dragging })
+  const [showMenu, setShowMenu] = useState(false);
+  const classes = useStyles({ dragging });
 
-  let settingsTitle = settingsTitle_
+  let settingsTitle = settingsTitle_;
+
   if (!settingsTitle) { // if settingsTitle not given, generate from title
     if (typeof title === 'string') { // handle the easy case where title is a string
-      settingsTitle = `${title} Settings`
+      settingsTitle = `${title} Settings`;
     } else { // Fall back to basic prompt
-      settingsTitle = 'Settings'
+      settingsTitle = 'Settings';
     }
   }
 
   const onAlertClick = () => {
-    console.log('onAlertClick')
-  }
+    console.log('onAlertClick');
+  };
 
   const onMenuClick = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
   const onPrevItem = () => {
-    const newIndex = itemIndex - 1
+    const newIndex = itemIndex - 1;
+
     if (newIndex < 0) {
-      setItemIndex(items.length - 1)
+      setItemIndex(items.length - 1);
     } else {
-      setItemIndex(newIndex)
+      setItemIndex(newIndex);
     }
-  }
+  };
 
   const onNextItem = () => {
-    const newIndex = itemIndex + 1
+    const newIndex = itemIndex + 1;
+
     if (newIndex > items.length - 1) {
-      setItemIndex(0)
+      setItemIndex(0);
     } else {
-      setItemIndex(newIndex)
+      setItemIndex(newIndex);
     }
-  }
+  };
 
   return (
     <Paper ref={dragRef} className={root}>
@@ -171,8 +174,8 @@ const Card = ({
         {children}
       </div>
     </Paper>
-  )
-}
+  );
+};
 
 Card.defaultProps = {
   classes: {
@@ -191,7 +194,7 @@ Card.defaultProps = {
   disableNavigation: false,
   disableSettingsButton: false,
   hideMarkdownToggle: false,
-}
+};
 
 Card.propTypes = {
   /** Array of items (articles, tsv files) */
@@ -242,6 +245,6 @@ Card.propTypes = {
   setMarkdownView: PropTypes.func,
   /** function to get a custom component to add to settings card (optional) */
   getCustomComponent: PropTypes.func,
-}
+};
 
-export default Card
+export default Card;

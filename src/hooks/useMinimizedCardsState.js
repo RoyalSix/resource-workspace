@@ -1,12 +1,9 @@
-import { useState } from 'react';
-
 export function useMinimizedCardsState({
   currentLayout,
   setCurrentLayout,
   useUserLocalStorage,
-  cards: initialCards = [],
+  cards = [],
 }) {
-  const [cards] = useState(initialCards);
   const [minimizedCardIds, setMinimizedCardId] = useUserLocalStorage('minimizedCardIds', []);
   // The preCurrentLayout is the initial layout when the last card was minimized. This is useful to gracefully restore the card to its initial layout.
   const [preCurrentLayout, setPreCurrentLayout] = useUserLocalStorage('preCurrentLayout', null);
