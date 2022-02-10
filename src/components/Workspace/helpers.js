@@ -9,9 +9,13 @@ export function useKeyWithChildren(_children) {
   }
 
   const children = useMemo(() =>
-    childrenArray.map((childComponent, index) => (
-      <Card key={childComponent.key ?? index + 1}>{React.cloneElement(childComponent)}</Card>
-    )), [childrenArray]);
+    childrenArray.map((childComponent, index) =>
+      // TRICKY: When using custom key for components it must match with the i value in the layouts
+      (
+        <Card key={childComponent.key ?? index + 1}>
+          {React.cloneElement(childComponent)}
+        </Card>
+      )), [childrenArray]);
   return children;
 }
 
@@ -53,17 +57,21 @@ export function getHeight(layoutHeights, ridx, cidx) {
   }
 }
 
-export function generateLayouts(layoutWidths, layoutHeights, maxGridUnits, minW, minH) {
+export function generateLayouts(layoutWidths, layoutHeights, maxGridUnits, minW, minH, _children) {
   const layouts = [];
   const smLayouts = [];
   const xsLayouts = [];
+  let index = 0;
 
   layoutWidths.forEach((row, ridx) => {
     row.forEach((cellUnit, cidx) => {
       const previousColumns = row.filter((_, _index) => _index < cidx);
       const x = previousColumns.reduce((curr, next) => getWidth(row, next, maxGridUnits) + curr, 0);
+      // TRICKY: When using custom key for components it must match with the i value in the layouts
+      const i = _children && _children[index] && _children[index]?.key ? _children[index]?.key : String(layouts.length + 1);
+
       const _layout = {
-        i: String(layouts.length + 1),
+        i,
         x,
         y: ridx * (maxGridUnits / layoutWidths.length),
         w: getWidth(row, cellUnit, maxGridUnits),
@@ -71,7 +79,7 @@ export function generateLayouts(layoutWidths, layoutHeights, maxGridUnits, minW,
       };
 
       const smLayout = {
-        i: String(layouts.length + 1),
+        i,
         x,
         y: ridx * (6 / layoutWidths.length),
         w: minW,
@@ -79,12 +87,14 @@ export function generateLayouts(layoutWidths, layoutHeights, maxGridUnits, minW,
       };
 
       const xsLayout = {
-        i: String(layouts.length + 1),
+        i,
         x,
         y: ridx * (6 / layoutWidths.length),
         w: minW,
         h: getHeight(layoutHeights, ridx, cidx),
       };
+
+      index++;
 
       if (minW) {
         _layout.minW = minW;
