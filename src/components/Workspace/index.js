@@ -150,7 +150,7 @@ Workspace.propTypes = {
   onLayoutChange: PropTypes.func,
   /** Method of the ResponsiveGridLayout component. */
   onBreakpointChange: PropTypes.func,
-  layout: PropTypes.array,
+  layout: PropTypes.object,
   layoutWidths: PropTypes.array,
   layoutHeights: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.number),
