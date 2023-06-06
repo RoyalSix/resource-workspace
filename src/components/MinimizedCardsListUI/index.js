@@ -71,12 +71,17 @@ export default function MinimizedCardsListUI({ minimizedCards = [], maximizeCard
 
               return (
                 <div key={`${index}_${title}_fab`} className={classes.item} onClick={() => onMaximizeCard(id)}>
-                  <Card className={classes.card} title={titleMessage}>
+                  <Card
+                    className={classes.card}
+                    title={titleMessage}
+                    id={`restore_title_${id}`}
+                  >
                     <CardContent>
                       <b>{title}</b>
                     </CardContent>
                   </Card>
                   <Fab
+                    id={`restore_button_${id}`}
                     color="primary"
                     variant="circular"
                     title={titleMessage}
@@ -98,9 +103,9 @@ export default function MinimizedCardsListUI({ minimizedCards = [], maximizeCard
           variant={showFabList ? 'circular' : 'extended'}
         >
           {showFabList ?
-            <CloseIcon title='Close' />
+            <CloseIcon title='Close' id={`close_minimized_cards`} />
             :
-            <Badge badgeContent={badgeContent} max={999} color='secondary'>
+            <Badge badgeContent={badgeContent} max={999} color='secondary' id={`show_minimized_cards`} >
               <CropLandscapeIcon className={classes.icon} />
               Recent cards&nbsp;&nbsp;
             </Badge>
